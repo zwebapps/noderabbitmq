@@ -1,0 +1,11 @@
+{
+  "type": "mongodb",
+  "host": "localhost",
+  "port": 27017,
+  "username": "root",
+  "password": "Password123",
+  "database": "mainapp",
+  "entities": ["src/entity/*.ts"],
+  "synchronize": true,
+  "logging": false   
+  }
