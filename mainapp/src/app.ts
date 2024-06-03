@@ -83,15 +83,15 @@ AppDataSource.initialize()
           });
 
            // update Product RabbitMQ
-          channel.consume(updateProdcutQueueName, (message:any) => {
-            const fetchedProduct: any = message.content.toString()
-            if (Buffer.isBuffer(fetchedProduct)) {
-              // If fetchedProduct is a Buffer, convert it to a string
-              console.log(fetchedProduct.toString(), 1);
-            } else {
-                // If fetchedProduct is an object, convert it to a JSON string
-                console.log(JSON.stringify(fetchedProduct, null, 2));
-            }
+          channel.consume(updateProdcutQueueName, async (message:any) => {
+            const fetchedProduct: any = JSON.parse(message.content.toString())            
+              const product = await productRepository.findOneBy({
+                admin_id: JSON.stringify(fetchedProduct.id),
+              });
+            
+
+            if (product?.likes) product.likes++;
+            const result = await productRepository.save(product as Product);
           });
 
            // create Product RabbitMQ
